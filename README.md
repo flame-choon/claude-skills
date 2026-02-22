@@ -56,9 +56,32 @@ Poetry 기반 Python 프로젝트 기본 구조를 설정하는 스킬입니다.
 
 ---
 
+### [fmp-stock-api](fmp-stock-api/SKILL.md)
+
+FMP API endpoint를 코드로 작성할 때 참조하는 레퍼런스 스킬입니다. 잘못된 endpoint나 파라미터 사용을 방지합니다.
+
+**적용 요청 예시**
+- FMP API endpoint 코드 작성 시
+- 주가 차트, 시세, 재무제표, 기업정보 조회 구현 시
+- `/api/v3/` 대신 `/stable/` 경로 사용 확인이 필요할 때
+
+**카테고리별 레퍼런스**
+
+| 카테고리 | 파일 | 주요 Endpoint |
+|---------|------|--------------|
+| Charts | [chart/endpoints.md](fmp-stock-api/chart/endpoints.md) | EOD 차트(light/full), Intraday(1min~4hour) |
+| Quote | [quote/endpoints.md](fmp-stock-api/quote/endpoints.md) | 단일/Batch 시세, After Market, 거래소 전체 |
+| Company | [company/endpoints.md](fmp-stock-api/company/endpoints.md) | 기업 프로필, 임원, 시총, 유통주식수, M&A |
+| Statements | [statements/endpoints.md](fmp-stock-api/statements/endpoints.md) | 재무제표 3종, TTM, 핵심지표, 성장률, 10-K |
+| Directory | [directory/endpoints.md](fmp-stock-api/directory/endpoints.md) | 종목 검색, 스크리너, 심볼 리스트 |
+
+**Base URL**: `https://financialmodelingprep.com/stable`
+
+---
+
 ## 전제 조건
 
-모든 스킬은 Poetry가 설치된 환경을 전제로 합니다.
+`fmp-stock-project-setup`, `python-project-setup` 스킬은 Poetry가 설치된 환경을 전제로 합니다.
 
 ```bash
 # Poetry 설치 확인
