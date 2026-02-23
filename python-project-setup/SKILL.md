@@ -63,6 +63,33 @@ curl -sSL https://install.python-poetry.org | python3 -
 
 ## Step 3: Poetry 프로젝트 생성 (현재 디렉토리 기준)
 
+### pyproject.toml 존재 여부 먼저 확인
+
+```bash
+# 현재 디렉토리에 pyproject.toml이 있는지 확인
+ls pyproject.toml 2>/dev/null && echo "EXISTS" || echo "NOT FOUND"
+```
+
+**pyproject.toml이 이미 존재하는 경우** → `poetry init` 실행하지 않고 아래 항목만 확인·수정합니다:
+
+1. `[tool.poetry]` 섹션에 `package-mode = false`가 있는지 확인
+   ```bash
+   grep "package-mode" pyproject.toml
+   ```
+2. 없다면 `[tool.poetry]` 섹션 안에 직접 추가:
+   ```toml
+   [tool.poetry]
+   name = "..."
+   version = "..."
+   package-mode = false   # ← 이 줄 추가
+   ```
+   > ⚠️ 이 설정이 없으면 `poetry install` 시 아래 에러가 발생합니다:
+   > `Error: The current project could not be installed: No file/folder found for package <name>`
+
+3. 이후 Step 4 의존성 추가부터 이어서 진행합니다.
+
+**pyproject.toml이 없는 경우** → 아래 명령으로 새로 생성합니다:
+
 ```bash
 # 현재 디렉토리에서 바로 초기화 (새 폴더를 만들지 않음)
 poetry init --name <project-name> --no-interaction
@@ -303,4 +330,5 @@ DB_PASSWORD=
 - `.gitignore`에 `.venv/`와 `.env`를 추가하는 것을 권장하세요.
 - 프로젝트를 공유할 때는 `poetry.lock` 파일도 함께 커밋하세요.
 - `package-mode = false`는 패키징 없이 의존성 관리만 할 때 필요한 설정입니다.
+- **기존 `pyproject.toml`을 재사용하는 경우**, `package-mode = false`가 없으면 `poetry install` 시 `No file/folder found for package` 에러가 발생합니다. `[tool.poetry]` 섹션에 해당 줄을 반드시 추가하세요.
 - FastAPI 서버 실행 시 `--reload` 옵션은 개발 환경에서만 사용하세요.

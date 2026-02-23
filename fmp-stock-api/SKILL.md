@@ -41,6 +41,74 @@ apikey: YOUR_API_KEY
 | Statements | `statements/endpoints.md` | 재무제표, 지표, 비율 |
 | Directory | `directory/endpoints.md` | 종목 검색, 심볼 리스트 |
 
+## 의존성 설정
+
+FMP API 관련 코드 작성 시 아래 패키지들이 필요하다. **패키지 설치는 하지 않으며**, 프로젝트 방식에 따라 의존성 정의만 추가한다.
+
+### Poetry 기반 프로젝트 (`pyproject.toml` 존재)
+
+`pyproject.toml`의 `[tool.poetry.dependencies]` 섹션에 추가:
+
+```toml
+[tool.poetry.dependencies]
+python = "^3.9"
+requests = "^2.31.0"
+pandas = "^2.0.0"
+numpy = "^1.24.0"
+matplotlib = "^3.7.0"
+plotly = "^5.18.0"
+```
+
+### 일반 프로젝트 (`requirements.txt` 존재)
+
+`requirements.txt`에 추가:
+
+```
+requests>=2.31.0
+pandas>=2.0.0
+numpy>=1.24.0
+matplotlib>=3.7.0
+plotly>=5.18.0
+```
+
+> 💡 **판단 기준**: `pyproject.toml` 파일이 프로젝트 루트에 있으면 Poetry 기반. 없고 `requirements.txt`가 있으면 해당 파일에 추가. 둘 다 없으면 `requirements.txt`를 새로 생성하여 추가.
+
+---
+
+## 환경변수 설정 (.env)
+
+### .env.example 생성/수정
+
+프로젝트 루트에 `.env.example` 파일에 아래 내용을 포함한다:
+
+```dotenv
+# Financial Modeling Prep API
+# https://site.financialmodelingprep.com/developer/docs 에서 발급
+FMP_API_KEY=your_fmp_api_key_here
+```
+
+### 안내 사항
+
+1. **`.env.example`은 Git에 커밋**한다 — 팀원들이 어떤 환경변수가 필요한지 알 수 있도록
+2. **`.env`는 절대 Git에 커밋하지 않는다** — `.gitignore`에 `.env` 가 포함되어 있는지 확인
+3. 실제 사용 시 `.env.example`을 복사해 `.env`로 만들고 실제 키 값을 입력:
+   ```bash
+   cp .env.example .env
+   # .env 파일을 열어 FMP_API_KEY 값을 실제 키로 교체
+   ```
+4. 코드에서 환경변수 로딩은 `python-dotenv` 사용 권장:
+   ```python
+   from dotenv import load_dotenv
+   import os
+
+   load_dotenv()
+   API_KEY = os.environ["FMP_API_KEY"]
+   ```
+
+> ⚠️ `python-dotenv` 사용 시 의존성에도 추가 필요: Poetry면 `python-dotenv = "^1.0.0"`, requirements.txt면 `python-dotenv>=1.0.0`
+
+---
+
 ## 공통 파라미터 패턴
 
 ```python
