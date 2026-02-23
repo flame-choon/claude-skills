@@ -1,0 +1,60 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# 환경변수 / 시크릿
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+env/
+.Python
+
+# Poetry
+poetry.lock
+
+# Pytest / 테스트 캐시
+.pytest_cache/
+.cache/
+.tox/
+htmlcov/
+.coverage
+coverage.xml
+
+# Ruff / Black / 린터 캐시
+.ruff_cache/
+.mypy_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 로그 / 임시 파일
+*.log
+*.tmp
+*.bak
