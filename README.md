@@ -34,25 +34,44 @@ FMP(Financial Modeling Prep) API 기반 주식 데이터 분석 Python 프로젝
 
 ### [python-project-setup](python-project-setup/SKILL.md)
 
-Poetry 기반 Python 프로젝트 기본 구조를 설정하는 스킬입니다. AWS 작업을 위한 boto3 설치를 포함합니다.
+Poetry 기반 FastAPI 백엔드 API 프로젝트 구조를 설정하는 스킬입니다. DB와 캐싱 조합을 선택하면 해당 패키지와 환경변수 템플릿을 자동으로 구성합니다.
 
 **적용 요청 예시**
 - "파이썬 프로젝트 만들어줘"
 - "Poetry로 프로젝트 세팅"
-- "AWS 프로젝트 초기화"
-- "Python 환경 설정"
+- "백엔드 API 프로젝트 초기화"
+- "FastAPI 프로젝트 세팅"
 
 **생성되는 구조**
 ```
 ./
 ├── pyproject.toml
+├── .env.example
 ├── src/
-│   └── __init__.py
+│   ├── main.py              # FastAPI 앱 진입점
+│   ├── core/
+│   │   └── config.py        # pydantic-settings 기반 환경변수 설정
+│   ├── api/
+│   │   └── v1/
+│   │       └── routers/     # 엔드포인트 라우터
+│   ├── schemas/             # Pydantic 요청/응답 모델
+│   └── services/            # 비즈니스 로직
 └── tests/
-    └── __init__.py
 ```
 
-**주요 의존성**: `boto3`
+**주요 의존성**: `fastapi`, `uvicorn`, `httpx`, `pydantic`, `pydantic-settings`, `python-dotenv`
+
+**선택적 의존성**
+
+| 옵션 | 패키지 |
+|------|--------|
+| PostgreSQL | `sqlalchemy`, `psycopg2-binary` |
+| MySQL | `sqlalchemy`, `pymysql` |
+| MongoDB | `motor`, `beanie` |
+| SQLite | `sqlalchemy` |
+| Redis | `redis` |
+| Memcached | `pymemcache` |
+| 로컬 캐싱 | `cachetools` |
 
 ---
 
