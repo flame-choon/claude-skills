@@ -45,7 +45,14 @@ GET /historical-price-eod/full
 ```
 GET /historical-price-eod/non-split-adjusted
 ```
-파라미터: `symbol` (✅), `from`, `to`, `apikey` (✅)
+| 파라미터 | 타입 | 필수 | 설명 |
+|---------|------|------|------|
+| symbol | string | ✅ | 티커 심볼 |
+| from | string | ❌ | 시작일 YYYY-MM-DD |
+| to | string | ❌ | 종료일 YYYY-MM-DD |
+| apikey | string | ✅ | API 키 |
+
+응답 필드: `date, adjOpen, adjHigh, adjLow, adjClose, volume`
 
 ---
 
@@ -53,7 +60,14 @@ GET /historical-price-eod/non-split-adjusted
 ```
 GET /historical-price-eod/dividend-adjusted
 ```
-파라미터: `symbol` (✅), `from`, `to`, `apikey` (✅)
+| 파라미터 | 타입 | 필수 | 설명 |
+|---------|------|------|------|
+| symbol | string | ✅ | 티커 심볼 |
+| from | string | ❌ | 시작일 YYYY-MM-DD |
+| to | string | ❌ | 종료일 YYYY-MM-DD |
+| apikey | string | ✅ | API 키 |
+
+응답 필드: `date, adjOpen, adjHigh, adjLow, adjClose, volume`
 
 ---
 
@@ -70,6 +84,7 @@ GET /historical-chart/1min
 | symbol | string | ✅ | 티커 심볼 |
 | from | string | ❌ | 시작 YYYY-MM-DD 또는 YYYY-MM-DD HH:MM:SS |
 | to | string | ❌ | 종료 YYYY-MM-DD 또는 YYYY-MM-DD HH:MM:SS |
+| nonadjusted | boolean | ❌ | 조정주가(false) 또는 비조정주가 선택(true) |
 | apikey | string | ✅ | API 키 |
 
 ### 5분봉
@@ -108,19 +123,27 @@ GET /historical-chart/4hour
 
 ```python
 # 오늘 AAPL 5분봉
+# GET /stable/historical-chart/5min?symbol=AAPL
 params = {
-    "symbol": "AAPL",
-    "from": "2024-01-15",
-    "to": "2024-01-15"
+    "symbol": "AAPL"
 }
-# GET /stable/historical-chart/5min?symbol=AAPL&from=2024-01-15&to=2024-01-15
 
 # 특정 시간대
+# GET /stable/historical-chart/5min?symbol=AAPL&from=2026-02-24&to=2026-02-26
 params = {
     "symbol": "AAPL",
-    "from": "2024-01-15 09:30:00",
-    "to": "2024-01-15 16:00:00"
+    "from": "2026-02-24",
+    "to": "2026-02-26"
 }
+
+# 비조정주가 데이터로 조회
+# GET /stable/historical-chart/5min?symbol=AAPL&nonadjusted=true
+params = {
+    "symbol": "AAPL",
+    "nonadjusted": true
+}
+
+
 ```
 
 응답 필드: `date, open, high, low, close, volume`
