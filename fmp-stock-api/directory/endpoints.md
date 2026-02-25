@@ -24,6 +24,22 @@ Base: `https://financialmodelingprep.com/stable`
 
 ---
 
+## 엔드포인트 활용 패턴
+
+디렉토리 엔드포인트는 단독 사용보다 다른 엔드포인트와 조합해 사용하는 경우가 많다.
+
+| 디렉토리 엔드포인트 | 주로 연계되는 엔드포인트 |
+|--------------------|------------------------|
+| `/available-exchanges` | `/company-screener?exchange=` |
+| `/available-sectors` | `/company-screener?sector=`, `/sector-performance-snapshot` |
+| `/available-industries` | `/company-screener?industry=`, `/industry-performance-snapshot` |
+| `/available-countries` | `/company-screener?country=` |
+| `/financial-statement-symbol-list` | `/income-statement`, `/balance-sheet-statement` |
+| `/symbol-change` | 데이터 파이프라인에서 구심볼 → 신심볼 매핑 |
+| `/etf-list` | `/etf/holdings`, `/etf/info` |
+
+---
+
 ## 1. Company Symbols List — 전체 종목 목록
 
 ```
@@ -399,19 +415,3 @@ params = {}
 ]
 
 ```
-
----
-
-## 참조 관계 — 디렉토리 엔드포인트 활용 패턴
-
-디렉토리 엔드포인트는 단독 사용보다 다른 엔드포인트와 조합해 사용하는 경우가 많다.
-
-| 디렉토리 엔드포인트 | 주로 연계되는 엔드포인트 |
-|--------------------|------------------------|
-| `/available-exchanges` | `/company-screener?exchange=` |
-| `/available-sectors` | `/company-screener?sector=`, `/sector-performance-snapshot` |
-| `/available-industries` | `/company-screener?industry=`, `/industry-performance-snapshot` |
-| `/available-countries` | `/company-screener?country=` |
-| `/financial-statement-symbol-list` | `/income-statement`, `/balance-sheet-statement` |
-| `/symbol-change` | 데이터 파이프라인에서 구심볼 → 신심볼 매핑 |
-| `/etf-list` | `/etf/holdings`, `/etf/info` |
