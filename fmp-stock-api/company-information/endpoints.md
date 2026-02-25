@@ -47,6 +47,42 @@ GET /profile
 **응답 필드**
 | 필드 | 타입 | 설명 |
 |------|------|------|
+| symbol | string | 티커 심볼 |
+| price | float | 현재 주가 |
+| marketCap | integer | 시가총액 |
+| beta | float | 베타 (시장 대비 변동성) |
+| lastDividend | float | 최근 주당 배당금 |
+| range | string | 52주 주가 범위 (최저-최고) |
+| change | float | 전일 대비 주가 변동액 |
+| changePercentage | float | 전일 대비 주가 변동률 (%) |
+| volume | integer | 당일 거래량 |
+| averageVolume | integer | 평균 거래량 |
+| companyName | string | 회사명 |
+| currency | string | 거래 통화 (예: USD) |
+| cik | string | SEC CIK 번호 |
+| isin | string | 국제 증권 식별 번호 (ISIN) |
+| cusip | string | 미국 증권 식별 번호 (CUSIP) |
+| exchangeFullName | string | 상장 거래소 전체명 |
+| exchange | string | 상장 거래소 코드 |
+| industry | string | 산업 분류 |
+| website | string | 공식 웹사이트 URL |
+| description | string | 회사 사업 개요 |
+| ceo | string | 최고경영자(CEO) 이름 |
+| sector | string | 섹터 분류 |
+| country | string | 본사 소재 국가 코드 |
+| fullTimeEmployees | string | 정규직 임직원 수 |
+| phone | string | 대표 전화번호 |
+| address | string | 본사 주소 |
+| city | string | 본사 도시 |
+| state | string | 본사 주(State) |
+| zip | string | 우편번호 |
+| image | string | 회사 로고 이미지 URL |
+| ipoDate | string | IPO 상장일 (YYYY-MM-DD) |
+| defaultImage | boolean | 기본 이미지 사용 여부 |
+| isEtf | boolean | ETF 여부 |
+| isActivelyTrading | boolean | 현재 거래 활성 여부 |
+| isAdr | boolean | ADR(미국 예탁 증서) 여부 |
+| isFund | boolean | 펀드 여부 |
 
 
 ```python
@@ -221,6 +257,10 @@ GET /stock-peers
 **응답 필드**
 | 필드 | 타입 | 설명 |
 |------|------|------|
+| symbol | string | 티커 심볼 |
+| companyName | string | 회사명 |
+| price | float | 현재 주가 |
+| mktCap | integer | 시가총액 |
 
 ```python
 # GET /stable/stock-peers?symbol=AAPL
@@ -347,7 +387,7 @@ GET /historical-employee-count
 | limit | integer | ❌ | 페이지당 결과 수 (기본: 100) |
 | apikey | string | ✅ | API 키 |
 
-**응답 필드:** `/employee-count`와 동일 (복수의 기간 데이터 반환)
+**응답 필드** `/employee-count`와 동일 (복수의 기간 데이터 반환)
 
 ```python
 # GET /stable/historical-employee-count?symbol=AAPL
@@ -416,7 +456,7 @@ GET /market-capitalization-batch
 | symbols | string | ✅ | 쉼표로 구분된 티커 목록 (예: AAPL,MSFT,GOOG) |
 | apikey | string | ✅ | API 키 |
 
-**응답 필드:** `/market-capitalization`과 동일 (복수 종목 배열)
+**응답 필드** `/market-capitalization`과 동일 (복수 종목 배열)
 
 ```python
 # GET /stable/market-capitalization-batch?symbols=AAPL,MSFT,GOOG
@@ -495,7 +535,6 @@ GET /shares-float
 | freeFloat | float | 공개 유통 비율 (%) |
 | floatShares | integer | 유통 주식 수 |
 | outstandingShares | integer | 발행 주식 총수 |
-| source | string | 데이터 출처 URL |
 
 ```python
 # GET /stable/shares-float?symbol=AAPL
@@ -531,7 +570,7 @@ GET /shares-float-all
 | limit | integer | ❌ | 페이지당 결과 수 (기본: 1000) |
 | apikey | string | ✅ | API 키 |
 
-**응답 필드:** `/shares-float`과 동일
+**응답 필드** `/shares-float`과 동일
 
 > ⚠️ 전체 데이터 크기가 매우 크므로 반드시 `page` + `limit`으로 페이지네이션 사용
 
@@ -605,7 +644,7 @@ GET /mergers-acquisitions-search
 | name | string | ✅ | 검색할 기업명 (부분 일치) |
 | apikey | string | ✅ | API 키 |
 
-**응답 필드:** `/mergers-acquisitions-latest`와 동일
+**응답 필드** `/mergers-acquisitions-latest`와 동일
 
 ```python
 # GET /stable/mergers-acquisitions-search?name=Apple
@@ -653,7 +692,7 @@ GET /key-executives
 | currencyPay | string | 보수 통화 |
 | gender | string | 성별 |
 | yearBorn | integer | 출생연도 |
-| titleSince | string | 현 직책 취임일 (YYYY-MM-DD) |
+| active | string | 현 직책 유지 여부 |
 
 ```python
 # GET /stable/key-executives?symbol=AAPL
@@ -661,8 +700,18 @@ params = {"symbol": "AAPL"}
 
 # 응답 예시
 [
-  {"title": "Chief Executive Officer", "name": "Mr. Timothy D. Cook", "pay": 63200000, "gender": "male", "yearBorn": 1960}
+  {
+    "title": "Chief Executive Officer & Director",
+    "name": "Timothy D. Cook",
+    "pay": 16520856,
+    "currencyPay": "USD",
+    "gender": "male",
+    "yearBorn": 1961,
+    "titleSince": null,
+    "active": true
+  }
 ]
+
 ```
 
 ---
@@ -684,40 +733,25 @@ GET /governance-executive-compensation
 **응답 필드**
 | 필드 | 타입 | 설명 |
 |------|------|------|
-| cik | string | CIK 번호 |
+| cik | string | SEC CIK 번호 |
 | symbol | string | 티커 심볼 |
 | companyName | string | 회사명 |
-| industryTitle | string | 산업 분류 |
 | filingDate | string | SEC 제출일 (YYYY-MM-DD) |
-| acceptedDate | string | SEC 수락일 (YYYY-MM-DD) |
+| acceptedDate | string | SEC 수락일시 (YYYY-MM-DD HH:MM:SS) |
 | nameAndPosition | string | 임원 이름 및 직책 |
-| year | integer | 보수 기준 연도 |
-| salary | integer | 기본 급여 (USD) |
-| bonus | integer | 보너스 (USD) |
-| stockAward | integer | 주식 보상 (USD) |
-| optionAward | integer | 옵션 보상 (USD) |
-| incentivePlanCompensation | integer | 인센티브 보상 (USD) |
-| allOtherCompensation | integer | 기타 보상 (USD) |
-| total | integer | 총 보수 (USD) |
-| link | string | SEC 원문 링크 URL |
+| year | integer | 보상 기준 연도 |
+| salary | integer | 기본급 |
+| bonus | integer | 보너스 |
+| stockAward | integer | 주식 보상 (Stock Award) |
+| optionAward | integer | 스톡옵션 보상 (Option Award) |
+| incentivePlanCompensation | integer | 인센티브 플랜 보상 |
+| allOtherCompensation | integer | 기타 보상 합계 |
+| total | integer | 총 보상액 |
+| link | string | SEC 공시 원문 링크 URL |
 
 ```python
 # GET /stable/governance-executive-compensation?symbol=AAPL
 params = {"symbol": "AAPL"}
-
-# 응답 예시
-[{
-  "nameAndPosition": "Timothy D. Cook - Chief Executive Officer",
-  "year": 2023,
-  "salary": 3000000,
-  "bonus": 0,
-  "stockAward": 46060000,
-  "total": 63200000
-}]
-
-```python
-# GET /stable/historical-price-eod/light?symbol=AAPL&from=2024-01-01&to=2024-12-31
-params = {"symbol": "AAPL", "from": "2024-01-01", "to": "2024-12-31"}
 
 # 응답 예시
 [
@@ -763,7 +797,7 @@ GET /executive-compensation-benchmark
 |------|------|------|
 | industryTitle | string | 업종명 |
 | year | integer | 기준 연도 |
-| averageCompensation | integer | 평균 총 보수 (USD) |
+| averageCompensation | float | 평균 총 보수 (USD) |
 
 ```python
 # GET /stable/executive-compensation-benchmark?year=2023
@@ -771,8 +805,12 @@ params = {"year": 2023}
 
 # 응답 예시
 [
-  {"industryTitle": "Computer & Office Equipment", "year": 2023, "averageCompensation": 21500000},
-  {"industryTitle": "Pharmaceutical Preparations", "year": 2023, "averageCompensation": 15800000}
+	{
+		"industryTitle": "ABRASIVE, ASBESTOS & MISC NONMETALLIC MINERAL PRODS",
+		"year": 2023,
+		"averageCompensation": 694313.1666666666
+	}
 ]
+
 ```
 
