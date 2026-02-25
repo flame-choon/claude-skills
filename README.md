@@ -60,11 +60,11 @@ FMP API endpoint를 코드로 작성할 때 참조하는 레퍼런스 스킬입�
 
 | 카테고리 | 파일 | 주요 Endpoint |
 |---------|------|--------------|
-| Charts | [chart/endpoints.md](fmp-stock-api/chart/endpoints.md) | EOD 차트(light/full), Intraday(1min~4hour) |
-| Quote | [quote/endpoints.md](fmp-stock-api/quote/endpoints.md) | 단일/Batch 시세, After Market, 거래소 전체 |
-| Company | [company/endpoints.md](fmp-stock-api/company/endpoints.md) | 기업 프로필, 임원, 시총, 유통주식수, M&A |
-| Statements | [statements/endpoints.md](fmp-stock-api/statements/endpoints.md) | 재무제표 3종, TTM, 핵심지표, 성장률, 10-K |
-| Directory | [directory/endpoints.md](fmp-stock-api/directory/endpoints.md) | 종목 검색, 스크리너, 심볼 리스트 |
+| Charts | [chart/endpoints.md](fmp-stock-api/chart/endpoints.md) | EOD 차트(light/full/미조정/배당조정), Intraday(1min~4hour) |
+| Quote | [quote/endpoints.md](fmp-stock-api/quote/endpoints.md) | 실시간 시세, 경량 시세, 시간외 거래/호가, 기간별 등락률 |
+| Company Information | [company-information/endpoints.md](fmp-stock-api/company-information/endpoints.md) | 기업 프로필, 임원, 시총, 유통주식수, M&A |
+| Statements | [statements/endpoints.md](fmp-stock-api/statements/endpoints.md) | 재무제표 3종, TTM, 핵심지표, 비율, 성장률, 10-K, SEC 원문 |
+| Directory | [directory/endpoints.md](fmp-stock-api/directory/endpoints.md) | 종목/ETF 목록, 거래소/섹터/산업 조회, 심볼 변경이력 |
 
 **Base URL**: `https://financialmodelingprep.com/stable`
 
