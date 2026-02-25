@@ -37,7 +37,7 @@ apikey: YOUR_API_KEY
 |---------|------|---------|
 | Charts | `chart/endpoints.md` | 주가 차트 (EOD, Intraday) |
 | Quote | `quote/endpoints.md` | 실시간 시세, Batch 조회 |
-| Company | `company/endpoints.md` | 기업 프로필, 임원, 시총 |
+| Company Information | `company-information/endpoints.md` | 기업 프로필, 임원, 시총 |
 | Statements | `statements/endpoints.md` | 재무제표, 지표, 비율 |
 | Directory | `directory/endpoints.md` | 종목 검색, 심볼 리스트 |
 
