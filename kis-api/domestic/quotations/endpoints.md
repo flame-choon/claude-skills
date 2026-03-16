@@ -25,11 +25,13 @@
 | 주식 시간외 현재가 | `GET /uapi/domestic-stock/v1/quotations/inquire-overtime-price` |
 | 주식 시간외 호가 | `GET /uapi/domestic-stock/v1/quotations/inquire-overtime-asking-price` |
 | 장마감 예상체결가 순위 | `GET /uapi/domestic-stock/v1/quotations/exp-closing-price` |
+| 거래량순위 (거래량/거래증가율/회전율 등) | `GET /uapi/domestic-stock/v1/quotations/volume-rank` |
 | ETF/ETN 현재가 | `GET /uapi/etfetn/v1/quotations/inquire-price` |
 | ETF 구성종목 시세 | `GET /uapi/etfetn/v1/quotations/inquire-component-stock-price` |
 | ETF/ETN NAV 비교추이 (종목별 실시간) | `GET /uapi/etfetn/v1/quotations/nav-comparison-trend` |
 | ETF/ETN NAV 비교추이 (일자별) | `GET /uapi/etfetn/v1/quotations/nav-comparison-daily-trend` |
 | ETF/ETN NAV 비교추이 (분봉) | `GET /uapi/etfetn/v1/quotations/nav-comparison-time-trend` |
+| 거래량순위 | `GET /uapi/domestic-stock/v1/quotations/volume-rank` |
 
 ---
 
@@ -1128,4 +1130,118 @@ params = {
     "fid_input_iscd": "069500"
 }
 res = requests.get(url, headers=headers, params=params)
+```
+
+---
+
+## [국내주식] 순위분석 API
+
+### 22. 거래량순위 [v1_국내주식-047]
+
+```
+GET /uapi/domestic-stock/v1/quotations/volume-rank
+```
+
+**언제 사용:** 국내주식 거래량순위를 조회할 때. 한국투자 HTS(eFriend Plus) > [0171] 거래량 순위 화면의 기능을 API로 개발한 것으로, 평균거래량/거래증가율/평균거래회전율/거래금액순/평균거래금액회전율 기준으로 정렬할 수 있다. 시장, 종목분류(보통주/우선주), 가격범위, 거래량 등 다양한 필터를 지원한다.
+
+> **주의:** 모의투자 미지원 API이며, `tr_cont`를 이용한 다음 조회(연속 조회)가 불가하다.
+
+**TR_ID**
+
+| 구분 | TR_ID |
+|------|-------|
+| 실전 | `FHPST01710000` |
+| 모의 | 미지원 |
+
+**Query Parameters**
+
+| 파라미터 | 한글명 | 필수 | 설명 |
+|---------|--------|------|------|
+| FID_COND_MRKT_DIV_CODE | 조건 시장 분류 코드 | ✅ | `J`:KRX, `NX`:NXT |
+| FID_COND_SCR_DIV_CODE | 조건 화면 분류 코드 | ✅ | `20171` (고정값) |
+| FID_INPUT_ISCD | 입력 종목코드 | ✅ | `0000`:전체, 기타:업종코드 |
+| FID_DIV_CLS_CODE | 분류 구분 코드 | ✅ | `0`:전체, `1`:보통주, `2`:우선주 |
+| FID_BLNG_CLS_CODE | 소속 구분 코드 | ✅ | `0`:평균거래량, `1`:거래증가율, `2`:평균거래회전율, `3`:거래금액순, `4`:평균거래금액회전율 |
+| FID_TRGT_CLS_CODE | 대상 구분 코드 | ✅ | 1 or 0 9자리 (차례대로 증거금 30%/40%/50%/60%/100%/신용보증금 30%/40%/50%/60%). ex) `111111111` |
+| FID_TRGT_EXLS_CLS_CODE | 대상 제외 구분 코드 | ✅ | 1 or 0 10자리 (차례대로 투자위험·경고·주의/관리종목/정리매매/불성실공시/우선주/거래정지/ETF/ETN/신용주문불가/SPAC). ex) `0000000000` |
+| FID_INPUT_PRICE_1 | 입력 가격1 | ✅ | 가격 범위 시작 (ex. `0`). 전체 가격 대상 시 공란 |
+| FID_INPUT_PRICE_2 | 입력 가격2 | ✅ | 가격 범위 종료 (ex. `1000000`). 전체 가격 대상 시 공란 |
+| FID_VOL_CNT | 거래량 수 | ✅ | 거래량 기준 (ex. `100000`). 전체 거래량 대상 시 공란 |
+| FID_INPUT_DATE_1 | 입력 날짜1 | ✅ | 공란 입력 |
+
+**Response** (`output` — 배열)
+
+| 필드 | 한글명 |
+|------|--------|
+| hts_kor_isnm | HTS 한글 종목명 |
+| mksc_shrn_iscd | 유가증권 단축 종목코드 |
+| data_rank | 데이터 순위 |
+| stck_prpr | 주식 현재가 |
+| prdy_vrss_sign | 전일 대비 부호 |
+| prdy_vrss | 전일 대비 |
+| prdy_ctrt | 전일 대비율 |
+| acml_vol | 누적 거래량 |
+| prdy_vol | 전일 거래량 |
+| lstn_stcn | 상장 주수 |
+| avrg_vol | 평균 거래량 |
+| n_befr_clpr_vrss_prpr_rate | N일전종가대비현재가대비율 |
+| vol_inrt | 거래량증가율 |
+| vol_tnrt | 거래량 회전율 |
+| nday_vol_tnrt | N일 거래량 회전율 |
+| avrg_tr_pbmn | 평균 거래 대금 |
+| tr_pbmn_tnrt | 거래대금회전율 |
+| nday_tr_pbmn_tnrt | N일 거래대금 회전율 |
+| acml_tr_pbmn | 누적 거래 대금 |
+
+```python
+# GET /uapi/domestic-stock/v1/quotations/volume-rank
+import requests
+
+url = "https://openapi.koreainvestment.com:9443/uapi/domestic-stock/v1/quotations/volume-rank"
+headers = {
+    "content-type": "application/json; charset=utf-8",
+    "authorization": "Bearer {access_token}",
+    "appkey": "PSxxxxxxxxxxxxxxxxxx",
+    "appsecret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...",
+    "tr_id": "FHPST01710000",
+    "custtype": "P"
+}
+params = {
+    "FID_COND_MRKT_DIV_CODE": "J",
+    "FID_COND_SCR_DIV_CODE": "20171",
+    "FID_INPUT_ISCD": "0000",
+    "FID_DIV_CLS_CODE": "0",
+    "FID_BLNG_CLS_CODE": "0",
+    "FID_TRGT_CLS_CODE": "111111111",
+    "FID_TRGT_EXLS_CLS_CODE": "0000000000",
+    "FID_INPUT_PRICE_1": "",
+    "FID_INPUT_PRICE_2": "",
+    "FID_VOL_CNT": "",
+    "FID_INPUT_DATE_1": ""
+}
+res = requests.get(url, headers=headers, params=params)
+
+# 응답 예시
+{
+    "rt_cd": "0",
+    "msg_cd": "MCA00000",
+    "msg1": "정상처리 되었습니다.",
+    "output": [
+        {
+            "hts_kor_isnm": "삼성전자",
+            "mksc_shrn_iscd": "005930",
+            "data_rank": "01",
+            "stck_prpr": "71400",
+            "prdy_vrss_sign": "2",
+            "prdy_vrss": "800",
+            "prdy_ctrt": "1.13",
+            "acml_vol": "23456789",
+            "prdy_vol": "12345678",
+            "avrg_vol": "15000000",
+            "vol_inrt": "89.95",
+            "vol_tnrt": "0.39",
+            "acml_tr_pbmn": "1674567890123"
+        }
+    ]
+}
 ```
