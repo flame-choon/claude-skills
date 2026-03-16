@@ -119,6 +119,7 @@ KIS_ACCOUNT_SUFFIX  # 계좌 상품코드 (2자리, 보통 "01")
 | 카테고리 | 파일 | 주요 용도 |
 |---------|------|---------|
 | 인증 | `authorization/endpoints.md` | 접근토큰 발급/폐기, Hashkey, 웹소켓 접속키 |
+| 국내주식 주문/계좌 | `domestic/trading/endpoints.md` | 현금/신용 주문, 정정/취소, 잔고조회, 매수가능조회, 손익조회, 퇴직연금 |
 
 ---
 
